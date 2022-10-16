@@ -37,7 +37,8 @@ class Toast {
         }
 
         // else close toast after duration
-        if((typeof this.autoClose === 'number') || this.autoClose !== false) {
+        if((typeof this.autoClose === 'number') && this.autoClose !== false && !this.autoClose) {
+            console.log('ono');
             if(this.progress === true) {
                 // Animate the progress bar
                 this.toast.classList.add('toast-auto-close');
