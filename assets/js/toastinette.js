@@ -1,31 +1,36 @@
-// Global Variables
-var toastArray = [];
-localStorage.removeItem("toastArray");
-
 /**
  * Toastinette Notification
  * 
  * Is a simple notification system that can be used to display notifications for your own app.
+ * 
+ * Version: 1.0.3
+ * Author: Skyyinfinity
+ * Author URL: https://github.com/SkyyInfinity
+ * License: MIT
  */
-class Toast {
+class Toastinette {
     // Colors
-    C_INFO = '#385bbb';
-    C_WARNING = '#F3950D';
-    C_ERROR = '#D32F2F';
-    C_SUCCESS = '#388E3C';
+    C_INFO = 'var(--toast-info';
+    C_WARNING = 'var(--toast-warning)';
+    C_ERROR = 'var(--toast-error)';
+    C_SUCCESS = 'var(--toast-success)';
 
-    constructor(params) {
+    /**
+     * 
+     * @param {object} options List of options for the Toastinette notification
+     */
+    constructor(options) {
         // Properties
         this.body = document.body;
-        this.title = params.title;
-        this.message = params.message;
-        this.type = params.type;
-        this.position = params.position;
-        this.autoClose = params.autoClose;
-        this.progress = params.progress;
+        this.title = options.title;
+        this.message = options.message;
+        this.type = options.type;
+        this.position = options.position;
+        this.autoClose = options.autoClose;
+        this.progress = options.progress;
 
         // Create toast
-        this.body.appendChild(this.createToast(this.position, this.title, this.message, this.type));
+        this.create();
 
         this.close = document.querySelector('.toast-close button');
 
@@ -37,8 +42,7 @@ class Toast {
         }
 
         // else close toast after duration
-        if((typeof this.autoClose === 'number') && this.autoClose !== false && !this.autoClose) {
-            console.log('ono');
+        if(!isNaN(this.autoClose) && (this.autoClose !== false) && (this.autoClose !== undefined)) {
             if(this.progress === true) {
                 // Animate the progress bar
                 this.toast.classList.add('toast-auto-close');
@@ -48,48 +52,17 @@ class Toast {
             // Close toast after duration
             setTimeout(() => {
                 this.removeToast();
-            }, params.autoClose);
+            }, this.autoClose);
         }
     }
 
-    setPosition(position) {
-        this.position = position;
-
-        switch(this.position) {
-            case 'top-left':
-                this.setStyle({
-                    top: '24px',
-                    left: '24px',
-                    transform: 'translate(0, 0)'
-                });
-                break;
-            case 'top-center':
-            
-                break;
-            case 'top-right':
-            
-                break;
-            case 'bottom-left':
-            
-                break;
-            case 'bottom-center':
+    create() {
+        this.toast = this.generate(this.position, this.title, this.message, this.type);
         
-                break;
-            case 'bottom-right':
-        
-                break;
-        }
+        this.body.appendChild(this.toast);
     }
 
-    getPosition() {
-        return this.position;
-    }
-
-    setStyle(style) {
-        this.style = style;
-    }
-
-    createToast(position = 'top-center', title, message = 'message', type = 'success') {
+    generate(position = 'top-center', title, message = 'message', type = 'success') {
         let 
         progress, 
         toast, 
@@ -100,15 +73,53 @@ class Toast {
         toastClose, 
         toastCloseButton;
         
-        // Progress bar
+        // Generate Toast Progress Bar
+        progress = this.generateProgressBar();
+
+        // Generate Toast
+        toast = this.generateToast(type, position);
+
+        // Generate Toast Icon
+        toastIcon = this.generateToastIcon(type);
+
+        // Generate Toast Content
+        toastContent = this.generateToastContent(title, message).toastContent;
+        toastTitle = this.generateToastContent(title, message).toastTitle;
+        toastMessage = this.generateToastContent(title, message).toastMessage;
+
+        // Generate Toast Close Button
+        toastClose = this.generateCloseBtn(type).toastClose;
+        toastCloseButton = this.generateCloseBtn(type).toastCloseButton;
+
+        // Append Elements
+        toastClose.appendChild(toastCloseButton);
+        if(title !== undefined && title !== '') {
+            toastContent.appendChild(toastTitle);
+        }
+        toastContent.appendChild(toastMessage);
+        toast.appendChild(toastIcon);
+        toast.appendChild(toastContent);
+        toast.appendChild(toastClose);
+        toast.appendChild(progress);
+        
+        return toast;
+    }
+
+    generateProgressBar() {
+        let progress;
+
         progress = document.createElement('div');
         progress.classList.add('toast-progress');
 
-        // Toast
+        return progress;
+    }
+
+    generateToast(type, position) {
+        let toast;
+
         toast = document.createElement('div');
         toast.classList.add('toast');
-        toast.dataset.id = toastArray.length + 1;
-        // toast.setAttribute('data-id', Math.random().toString(36).substr(2, 9));
+        
         switch(type) {
             case 'success':
                 toast.classList.add('toast-success');
@@ -125,7 +136,12 @@ class Toast {
         }
         toast.dataset.position = position;
 
-        // Toast Icon
+        return toast;
+    }
+
+    generateToastIcon(type) {
+        let toastIcon;
+
         toastIcon = document.createElement('div');
         toastIcon.classList.add('toast-icon');
         switch(type) {
@@ -143,7 +159,15 @@ class Toast {
                 break;
         }
 
-        // Toast Content
+        return toastIcon;
+    }
+
+    generateToastContent(title, message) {
+        let 
+        toastContent, 
+        toastTitle, 
+        toastMessage;
+
         toastContent = document.createElement('div');
         toastContent.classList.add('toast-content');
 
@@ -159,7 +183,14 @@ class Toast {
         toastMessage.classList.add('toast-message');
         toastMessage.innerText = message;
 
-        // Toast Close
+        return { toastContent, toastTitle, toastMessage };
+    }
+
+    generateCloseBtn(type) {
+        let 
+        toastClose, 
+        toastCloseButton;
+
         toastClose = document.createElement('div');
         toastClose.classList.add('toast-close');
 
@@ -180,38 +211,26 @@ class Toast {
                 break;
         }
 
-        // Append Elements
-        toastClose.appendChild(toastCloseButton);
-        if(title !== undefined && title !== '') {
-            toastContent.appendChild(toastTitle);
-        }
-        toastContent.appendChild(toastMessage);
-        toast.appendChild(toastIcon);
-        toast.appendChild(toastContent);
-        toast.appendChild(toastClose);
-        toast.appendChild(progress);
-
-        this.toast = toast;
-        toastArray.push(toastArray.length + 1);
-        localStorage.setItem('toastArray', JSON.stringify(toastArray));
-        
-        return this.toast;
+        return { toastClose, toastCloseButton };
     }
 
     removeToast() {
-        this.toast.style.animation = 'toastFadeOut 0.6s ease-out backwards';
+        const DELETION_DURATION = 600;
+
+        this.toast.style.animation = `toastFadeOut ${DELETION_DURATION}ms ease-out backwards`;
         setTimeout(() => {
             this.toast.remove();
-        }, 600);
+        }, DELETION_DURATION);
     }
 
     animateProgressBar(duration) {
+        let progressBar = this.toast.querySelector('.toast-progress');
+
         if(this.progress === true) {
-            let progressBar = this.toast.querySelector('.toast-progress');
             progressBar.style.animation = `progressBar ${duration}ms ease-in-out forwards`;
         }
     }
 
 }
 
-export default Toast;
+export default Toastinette;

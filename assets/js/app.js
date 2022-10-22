@@ -4,17 +4,17 @@
 // console.log('toast', TOAST);
 // console.log('toast content', TOAST_CONTENT);
 
-import Toast from "./toast.js";
+import Toastinette from "./toastinette.js";
 
 const TOAST_ME = document.getElementById("toast-me");
 
 TOAST_ME.addEventListener("click", () => {
-    new Toast({
-        position: 'top-center', // top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
-        title: 'Succès', // optional
-        message: 'Votre message à bien été envoyé.', // required
-        type: 'success', // info, success, error, warning
-        autoClose: 5000, // false or number
-        progress: true // true or false
+    new Toastinette({
+        position: 'top-center',
+        title: 'Succès',
+        message: 'Votre message à bien été envoyé.',
+        type: 'success',
+        autoClose: 3000,
+        progress: false
     });
 });
