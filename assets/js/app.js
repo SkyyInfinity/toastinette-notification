@@ -15,6 +15,6 @@ TOAST_ME.addEventListener("click", () => {
         message: 'Votre message à bien été envoyé.',
         type: 'success',
         autoClose: 3000,
-        progress: false
+        progress: true
     });
 });
