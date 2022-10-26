@@ -1,4 +1,4 @@
-# Toastinette Notification (1.1.0)
+# Toastinette Notification
 <b>EN:</b> Toastinette Notification is a JavaScript library for make toast notifications for your own web apps.<br>
 <b>FR:</b> Toastinette Notification est une librairie JavaScript pour créer des notifications toast pour vos applications web.
 

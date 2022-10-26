@@ -20,12 +20,14 @@ const Toastinette = {
         let toast = this.create(options.position, options.title, options.message, options.type)
         document.body.appendChild(toast);
 
-        let close = document.querySelector('.toast-close button');
+        let close = document.querySelectorAll('.toast-close button');
 
         // close toast on click on close button
-        if(close) {
-            close.addEventListener('click', () => {
-                this.removeToast(toast);
+        if(close.length > 0) {
+            close.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    this.removeToast(toast);
+                });
             });
         }
 

@@ -7,7 +7,7 @@ TOAST_ME.addEventListener("click", () => {
             title: 'Attention',
             message: 'Un utilisateur est déjà connecté avec ce compte.',
             type: 'warning',
-            autoClose: 5000,
+            autoClose: false,
             progress: true
     });
     
