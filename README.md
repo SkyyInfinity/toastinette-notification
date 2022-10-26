@@ -1,4 +1,4 @@
-# Toastinette Notification (1.0.3)
+# Toastinette Notification (1.1.0)
 <b>EN:</b> Toastinette Notification is a JavaScript library for make toast notifications for your own web apps.<br>
 <b>FR:</b> Toastinette Notification est une librairie JavaScript pour créer des notifications toast pour vos applications web.
 
@@ -33,59 +33,20 @@
 <b>FR:</b> C'est tout. Profitez des notifications ! :stuck_out_tongue_winking_eye:<br>
 
 ## 2. <a name="configuration">Configuration</a>
-<b>EN:</b> Here is the list of options available to personalize your experience.<br>
-<b>FR:</b> Voici la liste des options disponible pour personnalisé votre expérience.<br>
-```
-title
-    Required: No
-    Type: string
-    Default: -
+<b>EN:</b> Here is the list of options available to personalize your notifications.<br>
+<b>FR:</b> Voici la liste des options disponible pour personnalisé vos notifications.<br>
 
-message
-    Required: Yes
-    Type: string
-    Default: 'message'
-
-position
-    Required: No
-    Type: string
-    Default: 'top-center'
-    Values: 
-        'top-left'
-        'top-center'
-        'top-right'
-        'bottom-left'
-        'bottom-center'
-        'bottom-right'
-
-autoClose
-    Required: No
-    Type: number OR boolean
-    Default: -
-    Values: 
-        false
-        number in ms (millisecond)
-
-type
-    Required: No
-    Type: string
-    Default: 'success'
-    Values
-        'success'
-        'error'
-        'info'
-        'warning'
-
-progress
-    Required: No
-    Type: boolean
-    Default: -
-    Values
-        true
-        false
-```
+| Option | Type | Required | Default value | Possible values |
+| :---: | :---: | :---: | :---: | :---: |
+| `title` | string | No | - | - |
+| `message` | string | Yes | "message" | - |
+| `position` | string | No | "top-center" | "top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right" |
+| `autoClose` | number, boolean | No | - | false, any number (millisecond) |
+| `type` | string | No | "success" | "success", "error", "info", "warning" |
+| `progress` | boolean | No | - | true, false |
 
 ## 3. <a name="credit">Credit</a>
-Developped with Visual Studio Code.
+- Developped with [Visual Studio Code](https://code.visualstudio.com/). <br>
+- All icons are made by [Remix Icon](https://remixicon.com/)
 
 Thank you very much for support. :blush:

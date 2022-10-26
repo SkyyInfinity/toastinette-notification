@@ -1,78 +1,61 @@
 /**
- * Toastinette Notification
+ * this Notification
  * 
  * Is a simple notification system that can be used to display notifications for your own app.
  * 
- * Version: 1.0.3
+ * Version: 1.1.0
  * Author: Skyyinfinity
  * Author URL: https://github.com/SkyyInfinity
  * License: MIT
  */
-class Toastinette {
-    // Colors
-    C_INFO = 'var(--toast-info';
-    C_WARNING = 'var(--toast-warning)';
-    C_ERROR = 'var(--toast-error)';
-    C_SUCCESS = 'var(--toast-success)';
 
-    /**
-     * 
-     * @param {object} options List of options for the Toastinette notification
-     */
-    constructor(options) {
-        // Properties
-        this.body = document.body;
-        this.title = options.title;
-        this.message = options.message;
-        this.type = options.type;
-        this.position = options.position;
-        this.autoClose = options.autoClose;
-        this.progress = options.progress;
+const Toastinette = {
 
-        // Create toast
-        this.create();
+    C_INFO: 'var(--toast-info)',
+    C_WARNING: 'var(--toast-warning)',
+    C_ERROR: 'var(--toast-error)',
+    C_SUCCESS: 'var(--toast-success)',
 
-        this.close = document.querySelector('.toast-close button');
+    init(options) {
+        let toast = this.create(options.position, options.title, options.message, options.type)
+        document.body.appendChild(toast);
+
+        let close = document.querySelector('.toast-close button');
 
         // close toast on click on close button
-        if(this.close) {
-            this.close.addEventListener('click', () => {
-                this.removeToast();
+        if(close) {
+            close.addEventListener('click', () => {
+                this.removeToast(toast);
             });
         }
 
         // else close toast after duration
-        if(!isNaN(this.autoClose) && (this.autoClose !== false) && (this.autoClose !== undefined)) {
-            if(this.progress === true) {
+        if(!isNaN(options.autoClose) && (options.autoClose !== false) && (options.autoClose !== undefined)) {
+            if(options.progress === true) {
                 // Animate the progress bar
-                this.toast.classList.add('toast-auto-close');
-                this.animateProgressBar(this.autoClose);
+                toast.classList.add('toast-auto-close');
+                this.animateProgressBar(toast, options.autoClose, options.progress);
             }
 
             // Close toast after duration
             setTimeout(() => {
-                this.removeToast();
-            }, this.autoClose);
+                this.removeToast(toast);
+            }, options.autoClose);
         }
-    }
+    },
 
-    create() {
-        this.toast = this.generate(this.position, this.title, this.message, this.type);
-        
-        this.body.appendChild(this.toast);
-    }
-
-    generate(position = 'top-center', title, message = 'message', type = 'success') {
+    create(position = 'top-center', title, message = 'message', type = 'success') {
+        // Variables
         let 
-        progress, 
-        toast, 
-        toastIcon, 
-        toastContent, 
-        toastTitle, 
-        toastMessage, 
-        toastClose, 
+        progress,
+        toast,
+        toastIcon,
+        toastContent,
+        toastTitle,
+        toastMessage,
+        toastClose,
         toastCloseButton;
-        
+
         // Generate Toast Progress Bar
         progress = this.generateProgressBar();
 
@@ -103,7 +86,7 @@ class Toastinette {
         toast.appendChild(progress);
         
         return toast;
-    }
+    },
 
     generateProgressBar() {
         let progress;
@@ -112,7 +95,7 @@ class Toastinette {
         progress.classList.add('toast-progress');
 
         return progress;
-    }
+    },
 
     generateToast(type, position) {
         let toast;
@@ -137,7 +120,7 @@ class Toastinette {
         toast.dataset.position = position;
 
         return toast;
-    }
+    },
 
     generateToastIcon(type) {
         let toastIcon;
@@ -160,7 +143,7 @@ class Toastinette {
         }
 
         return toastIcon;
-    }
+    },
 
     generateToastContent(title, message) {
         let 
@@ -184,7 +167,7 @@ class Toastinette {
         toastMessage.innerText = message;
 
         return { toastContent, toastTitle, toastMessage };
-    }
+    },
 
     generateCloseBtn(type) {
         let 
@@ -212,25 +195,23 @@ class Toastinette {
         }
 
         return { toastClose, toastCloseButton };
-    }
+    },
 
-    removeToast() {
+    removeToast(toast) {
         const DELETION_DURATION = 600;
 
-        this.toast.style.animation = `toastFadeOut ${DELETION_DURATION}ms ease-out backwards`;
+        toast.style.animation = `toastFadeOut ${DELETION_DURATION}ms ease-out backwards`;
         setTimeout(() => {
-            this.toast.remove();
+            toast.remove();
         }, DELETION_DURATION);
-    }
+    },
 
-    animateProgressBar(duration) {
-        let progressBar = this.toast.querySelector('.toast-progress');
+    animateProgressBar(toast, duration, progress) {
+        let progressBar = toast.querySelector('.toast-progress');
 
-        if(this.progress === true) {
+        if(progress === true) {
             progressBar.style.animation = `progressBar ${duration}ms ease-in-out forwards`;
         }
     }
 
 }
-
-export default Toastinette;
